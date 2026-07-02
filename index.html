@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Corralito de Piedra — Demo Historia IA</title>
+<style>
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: 'Work Sans', sans-serif;
+    background: linear-gradient(180deg, #E4D9BA 0%, #d8caa2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hint {
+    max-width: 420px;
+    text-align: center;
+    color: #1B2420;
+    padding: 24px;
+  }
+  .hint h1 { font-family: Georgia, serif; font-size: 22px; }
+  .hint p { font-size: 14px; line-height: 1.6; color: #58503F; }
+</style>
+</head>
+<body>
+  <div class="hint">
+    <h1>Corralito de Piedra</h1>
+    <p>Este es el widget "Historia IA" integrado en una página de ejemplo.
+    Haz clic en el botón de la esquina inferior derecha para preguntarle sobre
+    la historia de Cartagena de Indias.</p>
+  </div>
+
+  <script src="historia-ia-widget.js"></script>
+  <script>
+    HistoriaIA.init({ apiEndpoint: '/api/historia-cartagena' });
+  </script>
+</body>
+</html>
