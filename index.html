@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Corralito de Piedra — Demo Historia IA</title>
+<style>
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: 'Work Sans', sans-serif;
+    background: linear-gradient(180deg, #E4D9BA 0%, #d8caa2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hint {
+    max-width: 420px;
+    text-align: center;
+    color: #1B2420;
+    padding: 24px;
+  }
+  .hint h1 { font-family: Georgia, serif; font-size: 22px; }
+  .hint p { font-size: 14px; line-height: 1.6; color: #58503F; }
+</style>
+</head>
+<body>
+  <div class="hint">
+    <h1>Corralito de Piedra</h1>
+    <p>Este es el widget "Historia IA" integrado en una página de ejemplo.
+    Haz clic en el botón de la esquina inferior derecha para preguntarle sobre
+    la historia de Cartagena de Indias.</p>
+  </div>
+<script src="historia-ia-widget.js"></script>
+<script>
+  HistoriaIA.init({ apiEndpoint: '/api/historia-cartagena' });
+</script>
+  <script>
+    // SOLO PARA ESTA DEMO: llamamos a la API de Anthropic directamente desde
+    // el navegador porque este entorno de previsualización la permite sin
+    // exponer una key real. En tu sitio en producción, NO hagas esto: usa
+    // server-proxy-example.js y apunta apiEndpoint a tu propio backend.
+    HistoriaIA._askBackend = async function (history) {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-6',
+          max_tokens: 500,
+          system: `Eres "Guía Historia Viva", el asistente virtual de Corralito de Piedra, una empresa de tours en Cartagena de Indias, Colombia.
+
+TU ROL:
+Eres un narrador entusiasta y preciso de la historia de Cartagena de Indias: fundación (1533), la muralla y su sistema defensivo, los ataques piratas y corsarios (Drake, Vernon, Pointis), el Palacio de la Inquisición, la arquitectura colonial, el papel de Cartagena en la trata esclavista y la resistencia afrodescendiente (San Basilio de Palenque, Benkos Biohó), la independencia (11 de noviembre de 1811), y por qué el centro histórico es Patrimonio de la Humanidad UNESCO. El nombre "Corralito de Piedra" hace referencia a la ciudad amurallada.
+
+REGLAS:
+1. Responde SOLO sobre la historia, cultura y patrimonio de Cartagena de Indias y su región.
+2. Si preguntan algo fuera de este tema, redirige amablemente hacia la historia de Cartagena.
+3. Trata la historia de la esclavitud y la Inquisición con seriedad y respeto histórico.
+4. Nunca inventes fechas, nombres o cifras; si no estás seguro, dilo con honestidad.
+5. Sé cálido y conciso: 2-4 frases por respuesta salvo que pidan más detalle.
+6. Responde en español salvo que te escriban en otro idioma.`,
+          messages: history
+        })
+      });
+      const data = await response.json();
+      const block = data.content.find((b) => b.type === 'text');
+      return block ? block.text : 'No pude generar una respuesta.';
+    };
+
+
+  </script>
+
+</body>
+</html>
